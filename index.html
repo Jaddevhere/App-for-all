@@ -75,7 +75,7 @@
         function sendOTP() {
             const email = document.getElementById('user-email').value;
             const generatedOTP = generateOTP();
-            const expiresAt = Date.now() + (15 * 60 * 1000); // 15 دقيقة من الآن
+            const expiresAt = Date.now() + (15 * 60 * 1000); // صلاحية الرمز 15 دقيقة
 
             statusMsg.style.color = '#333';
             statusMsg.textContent = 'جاري إرسال الرمز...';
@@ -84,9 +84,9 @@
                 to_email: email,
                 otp_code: generatedOTP
             }).then(() => {
-                // حفظ الرمز ووقت الانتهاء مؤقتاً
                 localStorage.setItem('temp_otp', generatedOTP);
                 localStorage.setItem('otp_expires', expiresAt);
+                localStorage.setItem('user_email', email);
 
                 loginForm.style.display = 'none';
                 otpSection.style.display = 'block';
@@ -114,6 +114,7 @@
             if (userEnteredOTP === savedOTP) {
                 statusMsg.style.color = 'green';
                 statusMsg.textContent = 'تم التحقق بنجاح! جاري التوجيه...';
+
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.removeItem('temp_otp');
                 localStorage.removeItem('otp_expires');
