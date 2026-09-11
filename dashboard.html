@@ -11,7 +11,6 @@
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --accent: #6366f1;
-            --accent-hover: #4f46e5;
             --card-bg: #1e293b;
             --border-color: #334155;
         }
@@ -31,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 250px;
             background-color: var(--bg-secondary);
@@ -52,9 +50,7 @@
             margin-bottom: 30px;
         }
 
-        .menu-list {
-            list-style: none;
-        }
+        .menu-list { list-style: none; }
 
         .menu-item {
             padding: 12px 16px;
@@ -86,7 +82,6 @@
 
         .logout-btn:hover { background-color: #dc2626; }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             padding: 30px;
@@ -130,6 +125,7 @@
         }
     </style>
     <script>
+        // حماية الصفحة من الوصول المباشر
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = 'index.html';
         }
@@ -137,12 +133,11 @@
 </head>
 <body>
 
-    <!-- القائمة الجانبية -->
     <aside class="sidebar">
         <div>
             <div class="brand">⚡ AppForAll</div>
             <ul class="menu-list">
-                <li class="menu-item active">📊 الرئيسة</li>
+                <li class="menu-item active">📊 الرئيسية</li>
                 <li class="menu-item">👤 الملف الشخصي</li>
                 <li class="menu-item">⚙️ الإعدادات</li>
             </ul>
@@ -150,24 +145,22 @@
         <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
     </aside>
 
-    <!-- المحتوى الرئيسي -->
     <main class="main-content">
         <header class="header">
             <div>
-                <h1>مرحباً بك مجدداً! 👋</h1>
-                <p style="color: var(--text-sub); font-size: 14px;">تم تسجيل دخولك بنجاح من خلال EmailJS</p>
+                <h1>منوّر الموقع! 👋 🎉</h1>
+                <p style="color: var(--text-sub); font-size: 14px;">تم التأكد من رمز التحقق ودخولك بنجاح</p>
             </div>
         </header>
 
-        <!-- كروت الإحصائيات -->
         <section class="stats-grid">
             <div class="stat-card">
                 <h4>حالة الحساب</h4>
-                <div class="value" style="color: #10b981;">نشط 🟢</div>
+                <div class="value" style="color: #10b981;">مؤكد ونشط 🟢</div>
             </div>
             <div class="stat-card">
                 <h4>البريد الإلكتروني</h4>
-                <div class="value" style="font-size: 16px;">مؤكد ✅</div>
+                <div class="value" id="user-email-display" style="font-size: 15px;">---</div>
             </div>
             <div class="stat-card">
                 <h4>نوع الاشتراك</h4>
@@ -175,18 +168,23 @@
             </div>
         </section>
 
-        <!-- بطاقة المحتوى -->
         <section class="content-card">
-            <h3>🚀 الخطوات القادمة لمشروعك</h3>
+            <h3>🚀 مرحباً بك في حسابك الشخصي</h3>
             <p style="color: var(--text-sub); margin-top: 10px; line-height: 1.6;">
-                يمكنك الآن إضافة المزيد من الميزات التفاعلية هنا مثل الربط مع Firebase، أو بناء أجزاء جديدة لموقعك.
+                تم التحقق من الرمز بنجاح وفتح لوحة التحكم.
             </p>
         </section>
     </main>
 
     <script>
+        const userEmail = localStorage.getItem('user_email');
+        if (userEmail) {
+            document.getElementById('user-email-display').textContent = userEmail;
+        }
+
         function logout() {
             localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('user_email');
             window.location.href = 'index.html';
         }
     </script>
