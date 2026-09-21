@@ -1,329 +1,169 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - بوابة التحقق</title>
+    <title>TRL CLOUD HUB - Auth</title>
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
+        :root[data-theme="dark"] {
+            --bg: #090d16;
+            --card-bg: rgba(17, 24, 39, 0.8);
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
             --border: rgba(255, 255, 255, 0.1);
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --input-bg: rgba(15, 23, 42, 0.7);
+        }
+        :root[data-theme="light"] {
+            --bg: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --border: rgba(0, 0, 0, 0.1);
+            --accent: #4f46e5;
+            --accent-glow: rgba(79, 70, 229, 0.25);
+            --input-bg: #ffffff;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: all 0.3s ease;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; transition: background 0.3s, color 0.3s, border-color 0.3s; }
+        body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; overflow-x: hidden; color: var(--text-main); }
+        
+        /* Animated Background Particles Effect */
+        .bg-glow {
+            position: fixed; width: 350px; height: 350px; border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            animation: float 8s infinite alternate ease-in-out; pointer-events: none;
         }
+        @keyframes float { 0% { transform: translate(-30%, -30%) scale(1); } 100% { transform: translate(30%, 30%) scale(1.2); } }
 
-        body {
-            background: var(--bg-grad);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: var(--text-main);
-        }
-
+        .top-controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 12px; z-index: 100; }
+        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 20px; cursor: pointer; backdrop-filter: blur(10px); font-size: 14px; font-weight: 600; }
+        
         .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 40px 30px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--border);
+            border-radius: 24px; padding: 40px; width: 100%; max-width: 440px; text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4); animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
-            pointer-events: none;
-        }
+        .brand-logo { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; }
+        .input-group { text-align: start; margin-bottom: 18px; }
+        label { display: block; font-size: 13px; color: var(--text-sub); margin-bottom: 6px; font-weight: 600; }
+        input { width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); outline: none; font-size: 15px; }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
-        .logo-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-            display: inline-block;
-            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
-        }
+        .btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #6366f1, #a855f7); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
 
-        h2 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.subtitle {
-            font-size: 14px;
-            color: var(--text-sub);
-            margin-bottom: 25px;
-        }
-
-        .input-group {
-            margin-bottom: 18px;
-            text-align: right;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 13px;
-            color: var(--text-sub);
-            font-weight: 600;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 15px;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
-        }
-
-        .btn:disabled {
-            background: #475569;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .otp-inputs {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            dir: ltr;
-            margin: 20px 0;
-        }
-
-        .otp-field {
-            width: 48px;
-            height: 55px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            border-radius: 10px;
-            color: #38bdf8;
-        }
-
-        #status {
-            margin-top: 18px;
-            font-size: 14px;
-            font-weight: 600;
-            min-height: 20px;
-        }
-
-        .resend-btn {
-            background: transparent;
-            color: #818cf8;
-            border: 1px solid rgba(129, 140, 248, 0.3);
-            margin-top: 12px;
-        }
-
-        #otp-section { display: none; }
+        .otp-box { display: flex; gap: 8px; justify-content: center; margin: 20px 0; }
+        .otp-box input { width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; color: var(--accent); }
+        #status { margin-top: 15px; font-size: 14px; font-weight: 600; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        (function() { emailjs.init("dfHcVtsHMU2GkEVfL"); })();
-    </script>
+    <script> (function() { emailjs.init("dfHcVtsHMU2GkEVfL"); })(); </script>
 </head>
 <body>
 
-    <div class="card">
-        <div class="logo-icon">⚡</div>
+    <div class="bg-glow"></div>
 
-        <!-- نموذج تسجيل الدخول الأول -->
-        <form id="login-form">
-            <h2>تسجيل الدخول</h2>
-            <p class="subtitle">أدخل بياناتك ليصلك كود التحقق الآمن</p>
-            
+    <div class="top-controls">
+        <button class="icon-btn" onclick="toggleLanguage()" id="lang-btn">English</button>
+        <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">☀️ / 🌙</button>
+    </div>
+
+    <div class="card">
+        <div class="brand-logo">TRL CLOUD HUB</div>
+        <p style="color: var(--text-sub); font-size: 14px; margin-bottom: 25px;" id="sub-title">إستضافة المشاريع والسيرفرات السحابية</p>
+
+        <form id="auth-form">
             <div class="input-group">
-                <label>البريد الإلكتروني</label>
-                <input type="email" id="user-email" required placeholder="example@domain.com">
+                <label id="lbl-email">البريد الإلكتروني</label>
+                <input type="email" id="email" required placeholder="developer@trl.com">
             </div>
-            
             <div class="input-group">
-                <label>كلمة المرور</label>
-                <input type="password" id="user-pass" minlength="6" required placeholder="••••••••">
+                <label id="lbl-pass">كلمة السر</label>
+                <input type="password" id="password" required placeholder="••••••••">
             </div>
-            
-            <button type="submit" id="send-otp-btn" class="btn">إرسال كود التحقق 🚀</button>
+            <button type="submit" class="btn" id="btn-login">دخول / تسجيل حساب</button>
         </form>
 
-        <!-- نموذج إدخال رمز OTP -->
-        <div id="otp-section">
-            <h2>رمز التحقق</h2>
-            <p class="subtitle">تم إرسال كود مكوّن من 6 أرقام إلى بريدك الإلكتروني</p>
-
-            <div class="otp-inputs">
-                <input type="text" maxlength="1" class="otp-field" autofocus>
-                <input type="text" maxlength="1" class="otp-field">
-                <input type="text" maxlength="1" class="otp-field">
-                <input type="text" maxlength="1" class="otp-field">
-                <input type="text" maxlength="1" class="otp-field">
-                <input type="text" maxlength="1" class="otp-field">
+        <div id="otp-section" style="display: none;">
+            <h3 id="otp-title">أدخل رمز التحقق (OTP)</h3>
+            <div class="otp-box" dir="ltr">
+                <input type="text" maxlength="1" class="otp-digit">
+                <input type="text" maxlength="1" class="otp-digit">
+                <input type="text" maxlength="1" class="otp-digit">
+                <input type="text" maxlength="1" class="otp-digit">
+                <input type="text" maxlength="1" class="otp-digit">
+                <input type="text" maxlength="1" class="otp-digit">
             </div>
-
-            <button id="verify-btn" class="btn" onclick="verifyOTP()">تأكيد والدخول 🔑</button>
-            <button id="resend-btn" class="btn resend-btn" onclick="sendOTP()" disabled>إعادة إرسال (60s)</button>
+            <button class="btn" onclick="verifyOTP()" id="btn-verify">تأكيد الدخول</button>
         </div>
 
         <div id="status"></div>
     </div>
 
     <script>
-        const loginForm = document.getElementById('login-form');
-        const otpSection = document.getElementById('otp-section');
-        const statusMsg = document.getElementById('status');
-        const resendBtn = document.getElementById('resend-btn');
-        const otpFields = document.querySelectorAll('.otp-field');
-        let timerInterval;
+        let currentLang = 'ar';
+        const RENDER_BACKEND_URL = "https://your-render-service.onrender.com"; // رابط سيرفر Render المستقبلي
 
-        // التعامل مع مربعات الـ OTP التنقل التلقائي
-        otpFields.forEach((field, index) => {
-            field.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < otpFields.length - 1) {
-                    otpFields[index + 1].focus();
-                }
-            });
-            field.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && index > 0 && !e.target.value) {
-                    otpFields[index - 1].focus();
-                }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('lang-btn').textContent = currentLang === 'ar' ? 'English' : 'عربي';
+            document.getElementById('sub-title').textContent = currentLang === 'ar' ? 'إستضافة المشاريع والسيرفرات السحابية' : 'Cloud Project Hosting & Repository Hub';
+            document.getElementById('lbl-email').textContent = currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email Address';
+            document.getElementById('lbl-pass').textContent = currentLang === 'ar' ? 'كلمة السر' : 'Password';
+            document.getElementById('btn-login').textContent = currentLang === 'ar' ? 'دخول / تسجيل حساب' : 'Login / Register';
+        }
+
+        const otpDigits = document.querySelectorAll('.otp-digit');
+        otpDigits.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if(input.value && index < 5) otpDigits[index + 1].focus();
             });
         });
 
-        loginForm.addEventListener('submit', function(e) {
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
             e.preventDefault();
             sendOTP();
         });
 
-        function generateOTP() {
-            return Math.floor(100000 + Math.random() * 900000).toString();
-        }
-
         function sendOTP() {
-            const email = document.getElementById('user-email').value.trim();
-            const generatedOTP = generateOTP();
-            const expiresAt = Date.now() + (15 * 60 * 1000);
-
-            statusMsg.style.color = '#38bdf8';
-            statusMsg.textContent = '⏳ جاري إرسال كود التحقق...';
-
+            const email = document.getElementById('email').value;
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            document.getElementById('status').textContent = currentLang === 'ar' ? '⏳ جاري إرسال الرمز...' : '⏳ Sending OTP...';
+            
             emailjs.send('service_jyuwmvb', 'template_128vuh7', {
                 to_email: email,
-                otp_code: generatedOTP
+                otp_code: otp
             }).then(() => {
-                localStorage.setItem('temp_otp', generatedOTP);
-                localStorage.setItem('otp_expires', expiresAt);
+                localStorage.setItem('temp_otp', otp);
                 localStorage.setItem('user_email', email);
-
-                loginForm.style.display = 'none';
-                otpSection.style.display = 'block';
-                statusMsg.style.color = '#4ade80';
-                statusMsg.textContent = '✅ تم إرسال الرمز بنجاح إلى بريدك!';
-
-                startResendTimer(60);
-            }, (err) => {
-                statusMsg.style.color = '#f87171';
-                statusMsg.textContent = '❌ فشل إرسال الرمز، تأكد من صحة البريد الإلكتروني.';
+                document.getElementById('auth-form').style.display = 'none';
+                document.getElementById('otp-section').style.display = 'block';
+                document.getElementById('status').textContent = '';
+            }).catch(() => {
+                document.getElementById('status').textContent = '❌ Error sending email';
             });
         }
 
         function verifyOTP() {
             let enteredOTP = '';
-            otpFields.forEach(field => enteredOTP += field.value);
-
-            const savedOTP = localStorage.getItem('temp_otp');
-            const expiresAt = parseInt(localStorage.getItem('otp_expires'));
-
-            if (Date.now() > expiresAt) {
-                statusMsg.style.color = '#f87171';
-                statusMsg.textContent = '⚠️ انتهت صلاحية الكود. يرجى طلب كود جديد.';
-                return;
-            }
-
-            if (enteredOTP === savedOTP) {
-                statusMsg.style.color = '#4ade80';
-                statusMsg.textContent = '🎉 تم التحقق بنجاح! جاري التوجيه...';
-
+            otpDigits.forEach(d => enteredOTP += d.value);
+            if (enteredOTP === localStorage.getItem('temp_otp')) {
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('triggerWelcomeEmail', 'true'); // تفعيل إرسال إيميل الترحيب
-                localStorage.removeItem('temp_otp');
-                localStorage.removeItem('otp_expires');
-
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1000);
+                window.location.href = 'dashboard.html';
             } else {
-                statusMsg.style.color = '#f87171';
-                statusMsg.textContent = '❌ رمز غير صحيح! تأكد من الأرقام وكرر المحاولة.';
+                document.getElementById('status').textContent = currentLang === 'ar' ? '❌ الرمز خاطئ' : '❌ Invalid OTP';
             }
-        }
-
-        function startResendTimer(seconds) {
-            resendBtn.disabled = true;
-            let timeLeft = seconds;
-
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                resendBtn.textContent = `إعادة إرسال (${timeLeft}s)`;
-                timeLeft--;
-
-                if (timeLeft < 0) {
-                    clearInterval(timerInterval);
-                    resendBtn.disabled = false;
-                    resendBtn.textContent = 'إعادة إرسال الكود';
-                }
-            }, 1000);
         }
     </script>
 </body>
