@@ -3,21 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - رمز التحقق</title>
+    <title>تسجيل الدخول - بوابة التحقق</title>
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; transition: all 0.3s; }
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .card { background: #fff; padding: 35px 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 100%; max-width: 400px; text-align: center; }
-        h2 { color: #2d3748; margin-bottom: 20px; }
-        .input-group { margin-bottom: 15px; text-align: right; }
-        label { display: block; margin-bottom: 5px; color: #4a5568; font-size: 14px; }
-        input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; outline: none; }
-        input:focus { border-color: #667eea; }
-        button { width: 100%; padding: 12px; background: #667eea; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        button:disabled { background: #a0aec0; cursor: not-allowed; }
-        .resend-btn { background: transparent; color: #667eea; border: 1px solid #667eea; margin-top: 10px; }
-        .resend-btn:disabled { color: #a0aec0; border-color: #a0aec0; }
-        #status { margin-top: 15px; font-size: 14px; font-weight: 600; }
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: var(--bg-grad);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            dir: ltr;
+            margin: 20px 0;
+        }
+
+        .otp-field {
+            width: 48px;
+            height: 55px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 10px;
+            color: #38bdf8;
+        }
+
+        #status {
+            margin-top: 18px;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 20px;
+        }
+
+        .resend-btn {
+            background: transparent;
+            color: #818cf8;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            margin-top: 12px;
+        }
+
         #otp-section { display: none; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -28,29 +178,42 @@
 <body>
 
     <div class="card">
-        <!-- نموذج البريد وكلمة المرور -->
+        <div class="logo-icon">⚡</div>
+
+        <!-- نموذج تسجيل الدخول الأول -->
         <form id="login-form">
             <h2>تسجيل الدخول</h2>
+            <p class="subtitle">أدخل بياناتك ليصلك كود التحقق الآمن</p>
+            
             <div class="input-group">
                 <label>البريد الإلكتروني</label>
-                <input type="email" id="user-email" required placeholder="example@mail.com">
+                <input type="email" id="user-email" required placeholder="example@domain.com">
             </div>
+            
             <div class="input-group">
                 <label>كلمة المرور</label>
                 <input type="password" id="user-pass" minlength="6" required placeholder="••••••••">
             </div>
-            <button type="submit" id="send-otp-btn">إرسال رمز التحقق</button>
+            
+            <button type="submit" id="send-otp-btn" class="btn">إرسال كود التحقق 🚀</button>
         </form>
 
-        <!-- نموذج إدخال رمز التحقق (OTP) -->
+        <!-- نموذج إدخال رمز OTP -->
         <div id="otp-section">
-            <h2>تأكيد الرمز</h2>
-            <p style="font-size:13px; color:#718096;">تم إرسال كود مكون من 6 أرقام إلى بريدك الإلكتروني.</p>
-            <div class="input-group">
-                <input type="text" id="otp-input" placeholder="أدخل الرمز هنا" maxlength="6" style="text-align:center; letter-spacing: 5px; font-size: 20px;">
+            <h2>رمز التحقق</h2>
+            <p class="subtitle">تم إرسال كود مكوّن من 6 أرقام إلى بريدك الإلكتروني</p>
+
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" class="otp-field" autofocus>
+                <input type="text" maxlength="1" class="otp-field">
+                <input type="text" maxlength="1" class="otp-field">
+                <input type="text" maxlength="1" class="otp-field">
+                <input type="text" maxlength="1" class="otp-field">
+                <input type="text" maxlength="1" class="otp-field">
             </div>
-            <button id="verify-btn" onclick="verifyOTP()">تأكيد الدخول</button>
-            <button id="resend-btn" class="resend-btn" onclick="sendOTP()" disabled>إعادة إرسال (60s)</button>
+
+            <button id="verify-btn" class="btn" onclick="verifyOTP()">تأكيد والدخول 🔑</button>
+            <button id="resend-btn" class="btn resend-btn" onclick="sendOTP()" disabled>إعادة إرسال (60s)</button>
         </div>
 
         <div id="status"></div>
@@ -61,7 +224,22 @@
         const otpSection = document.getElementById('otp-section');
         const statusMsg = document.getElementById('status');
         const resendBtn = document.getElementById('resend-btn');
+        const otpFields = document.querySelectorAll('.otp-field');
         let timerInterval;
+
+        // التعامل مع مربعات الـ OTP التنقل التلقائي
+        otpFields.forEach((field, index) => {
+            field.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < otpFields.length - 1) {
+                    otpFields[index + 1].focus();
+                }
+            });
+            field.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && index > 0 && !e.target.value) {
+                    otpFields[index - 1].focus();
+                }
+            });
+        });
 
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -73,14 +251,14 @@
         }
 
         function sendOTP() {
-            const email = document.getElementById('user-email').value;
+            const email = document.getElementById('user-email').value.trim();
             const generatedOTP = generateOTP();
-            const expiresAt = Date.now() + (15 * 60 * 1000); // صلاحية الرمز 15 دقيقة
+            const expiresAt = Date.now() + (15 * 60 * 1000);
 
-            statusMsg.style.color = '#333';
-            statusMsg.textContent = 'جاري إرسال الرمز...';
+            statusMsg.style.color = '#38bdf8';
+            statusMsg.textContent = '⏳ جاري إرسال كود التحقق...';
 
-            emailjs.send('service_jyuwmvb', 'template_qsgvasi', {
+            emailjs.send('service_jyuwmvb', 'template_128vuh7', {
                 to_email: email,
                 otp_code: generatedOTP
             }).then(() => {
@@ -90,32 +268,35 @@
 
                 loginForm.style.display = 'none';
                 otpSection.style.display = 'block';
-                statusMsg.style.color = 'green';
-                statusMsg.textContent = 'تم إرسال الرمز إلى بريدك!';
+                statusMsg.style.color = '#4ade80';
+                statusMsg.textContent = '✅ تم إرسال الرمز بنجاح إلى بريدك!';
 
                 startResendTimer(60);
             }, (err) => {
-                statusMsg.style.color = 'red';
-                statusMsg.textContent = 'خطأ في الإرسال، حاول مجدداً.';
+                statusMsg.style.color = '#f87171';
+                statusMsg.textContent = '❌ فشل إرسال الرمز، تأكد من صحة البريد الإلكتروني.';
             });
         }
 
         function verifyOTP() {
-            const userEnteredOTP = document.getElementById('otp-input').value.trim();
+            let enteredOTP = '';
+            otpFields.forEach(field => enteredOTP += field.value);
+
             const savedOTP = localStorage.getItem('temp_otp');
             const expiresAt = parseInt(localStorage.getItem('otp_expires'));
 
             if (Date.now() > expiresAt) {
-                statusMsg.style.color = 'red';
-                statusMsg.textContent = 'انتهت صلاحية الرمز (15 دقيقة). اطلب رمزاً جديداً.';
+                statusMsg.style.color = '#f87171';
+                statusMsg.textContent = '⚠️ انتهت صلاحية الكود. يرجى طلب كود جديد.';
                 return;
             }
 
-            if (userEnteredOTP === savedOTP) {
-                statusMsg.style.color = 'green';
-                statusMsg.textContent = 'تم التحقق بنجاح! جاري التوجيه...';
+            if (enteredOTP === savedOTP) {
+                statusMsg.style.color = '#4ade80';
+                statusMsg.textContent = '🎉 تم التحقق بنجاح! جاري التوجيه...';
 
                 localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('triggerWelcomeEmail', 'true'); // تفعيل إرسال إيميل الترحيب
                 localStorage.removeItem('temp_otp');
                 localStorage.removeItem('otp_expires');
 
@@ -123,8 +304,8 @@
                     window.location.href = 'dashboard.html';
                 }, 1000);
             } else {
-                statusMsg.style.color = 'red';
-                statusMsg.textContent = 'الرمز غير صحيح، حاول مرة أخرى.';
+                statusMsg.style.color = '#f87171';
+                statusMsg.textContent = '❌ رمز غير صحيح! تأكد من الأرقام وكرر المحاولة.';
             }
         }
 
@@ -140,7 +321,7 @@
                 if (timeLeft < 0) {
                     clearInterval(timerInterval);
                     resendBtn.disabled = false;
-                    resendBtn.textContent = 'إعادة إرسال الرمز';
+                    resendBtn.textContent = 'إعادة إرسال الكود';
                 }
             }, 1000);
         }
